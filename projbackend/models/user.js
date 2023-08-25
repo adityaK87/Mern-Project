@@ -3,42 +3,47 @@ const Schema = mongoose.Schema;
 const { createHmac } = await import("node:crypto");
 const uuid4 = require("uuid/v4");
 
-const userSchema = new Schema({
-	name: {
-		type: String,
-		required: true,
-		maxLength: 32,
-		trim: true,
+const userSchema = new Schema(
+	{
+		name: {
+			type: String,
+			required: true,
+			maxlength: 32,
+			trim: true,
+		},
+		lastname: {
+			type: String,
+			maxlength: 32,
+			trim: true,
+		},
+		email: {
+			type: String,
+			trim: true,
+			required: true,
+			unique: true,
+		},
+		userinfo: {
+			type: String,
+			trim: true,
+		},
+		encry_password: {
+			type: String,
+			required: true,
+		},
+		salt: String,
+		role: {
+			type: Number,
+			default: 0,
+		},
+		purchases: {
+			type: Array,
+			default: [],
+		},
 	},
-	lastname: {
-		type: String,
-		maxLength: 32,
-		trim: true,
-	},
-	email: {
-		type: String,
-		trim: true,
-		required: true,
-		unique: true,
-	},
-	userinfo: {
-		type: String,
-		trim: true,
-	},
-	encry_password: {
-		type: String,
-		required: true,
-	},
-	salt: String,
-	role: {
-		type: Number,
-		default: 0,
-	},
-	purchases: {
-		type: Array,
-		default: [],
-	},
-});
+	{
+		timestamps: true,
+	}
+);
 
 userSchema
 	.virtual("password")
