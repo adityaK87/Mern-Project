@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
-const { signout, signup } = require("../controllers/auth");
+const { signout, signup, signin } = require("../controllers/auth");
 
 router.post(
 	"/signup",
@@ -13,6 +13,16 @@ router.post(
 		}),
 	],
 	signup
+);
+router.post(
+	"/signin",
+	[
+		check("email", "email is required").isEmail(),
+		check("password", "password field is required").isLength({
+			min: 3,
+		}),
+	],
+	signin
 );
 router.get("/signout", signout); // signout is coming from the auth controller
 
