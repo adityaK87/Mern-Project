@@ -13,6 +13,19 @@ exports.getUserId = (req, res, next, id) => {
 };
 
 exports.getUser = (req, res) => {
-	//TODO:get back here for password
+	req.profile.salt = undefined;
+	req.profile.encry_password = undefined;
 	return res.json(req.profile);
+};
+
+//Get All the Users
+exports.getAllUsers = (req, res) => {
+	User.find().exec((err, users) => {
+		if (err || !users) {
+			return res.status(404).json({
+				error: " No user Found In DB",
+			});
+		}
+		res.status(200).json(users);
+	});
 };
