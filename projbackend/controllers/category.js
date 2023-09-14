@@ -25,3 +25,16 @@ exports.createCategory = (req, res) => {
 		});
 	});
 };
+
+exports.getCategory = (req, res) => {
+	return res.json(req.category);
+};
+
+exports.getAllCategory = (req, res) => {
+	Category.find().exec((error, categories) => {
+		if (error) {
+			return res.status(400).json({ error: "NO categories found" });
+		}
+		res.json(categories);
+	});
+};
