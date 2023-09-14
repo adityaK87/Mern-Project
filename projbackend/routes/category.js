@@ -7,6 +7,7 @@ const {
 	getCategory,
 	getAllCategory,
 	updateCategory,
+	removeCategory,
 } = require("../controllers/category");
 
 const { isAdmin, isAuthenticated, isSignedIn } = require("../controllers/auth");
@@ -42,5 +43,12 @@ router.put(
 );
 
 //Delete route
+router.delete(
+	"/category/:categoryId/:userId",
+	isSignedIn,
+	isAuthenticated,
+	isAdmin,
+	removeCategory
+);
 
 module.exports = router;
