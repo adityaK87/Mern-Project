@@ -8,8 +8,8 @@ exports.getCategoryById = (req, res, next, id) => {
 			});
 		}
 		req.category = category;
+		next();
 	});
-	next();
 };
 
 exports.createCategory = (req, res) => {
@@ -57,7 +57,7 @@ exports.removeCategory = (req, res) => {
 			return res.status(400).json({ error: "FAILED to delete category" });
 		}
 		res.json({
-			message: `Successfully deleted ${category}`,
+			message: `Successfully deleted ${category.name}`,
 		});
 	});
 };
