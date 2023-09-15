@@ -42,12 +42,12 @@ exports.userPurchaseList = (req, res) => {
 	Order.find({
 		user: req.profile._id,
 	})
-		.poulate("user", "_id name")
+		.populate("user", "_id name")
 		.exec((err, order) => {
 			if (err) {
 				return res
 					.status(400)
-					.json({ error: "No orderin this account" });
+					.json({ error: "NO order in this account" });
 			}
 			return res.json(order);
 		});
