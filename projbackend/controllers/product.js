@@ -2,7 +2,6 @@ const Product = require("../models/product");
 const formidable = require("formidable");
 const _ = require("lodash");
 const fs = require("fs");
-const { error } = require("console");
 
 exports.getProductById = (req, res, next, id) => {
 	Product.findById(id)
@@ -21,15 +20,22 @@ exports.getProductById = (req, res, next, id) => {
 exports.createProduct = (req, res) => {
 	let form = new formidable.IncomingForm();
 	form.keepExtensions = true;
-	form.parse(req, (err, field, file) => {
+	form.parse(req, (err, fields, file) => {
 		if (err) {
 			res.status(400).json({
 				error: "Problem with the image",
 			});
 		}
 
-		//TODO: restrictions on fields
-		let product = new Product(field);
+		//destructure the fields
+		const { name, description, price, category, stock } = fields;
+		if (!name || !description || !price || !category || !stock) {
+			return res.status(404).json({
+				error: "PLease include all fields",
+			});
+		}
+
+		let product = new Product(fields);
 
 		//handle files here
 		if (file.photo) {
