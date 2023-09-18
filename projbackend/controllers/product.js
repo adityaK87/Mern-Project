@@ -72,3 +72,55 @@ exports.photo = (req, res, next) => {
 	}
 	next();
 };
+
+exports.deleteProduct = (req, res) => {
+	let product = req.product;
+
+	product.remove((err, deletedProduct) => {
+		if (err) {
+			return res.status(400).json({
+				error: "Failed to delete the product",
+			});
+		}
+		res.json({
+			error: "Deletion of the product Successfully",
+			deletedProduct,
+		});
+	});
+};
+
+exports.updateProduct = (req, res) => {
+	let form = new formidable.IncomingForm();
+	form.keepExtensions = true;
+	form.parse(req, (err, fields, file) => {
+		if (err) {
+			res.status(400).json({
+				error: "Problem with the image",
+			});
+		}
+
+		//updation code
+		let product = req.product;
+		product = _.extend(product, fields);
+
+		//handle files here
+		if (file.photo) {
+			if (file.photo.size > 3 * 1024 * 1024) {
+				return res.status(400).json({
+					error: "File size too big!",
+				});
+			}
+			product.photo.data = fs.readFileSync(file.photo.path);
+			product.photo.contentType = file.photo.type;
+		}
+
+		product.save((err, product) => {
+			if (err) {
+				return res.status(400).json({
+					error: "updation of product failed",
+				});
+			}
+			res.json(product);
+		});
+	});
+};
