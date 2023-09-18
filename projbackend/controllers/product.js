@@ -144,3 +144,37 @@ exports.getAllProducts = (req, res) => {
 			res.json(products);
 		});
 };
+
+//
+exports.getAllUniquecategories = (req, res) => {
+	Product.distinct("category", {}, (err, category) => {
+		if (err) {
+			return res.status(400).json({
+				error: "No category found",
+			});
+		}
+		res.json(category);
+	});
+};
+
+exports.updateStock = function (req, res, next) {
+	let myOperations = req.body.order.products.map((prod) => {
+		return {
+			updateOne: {
+				filter: {
+					_id: prod._id,
+					update: { $inc: { stock: -prod.count, sold: +prod.count } },
+				},
+			},
+		};
+	});
+
+	Product.bulkWrite(myOperations, {}, (err, products) => {
+		if (err) {
+			return res.status(400).json({
+				error: "Bulk operation Failed",
+			});
+		}
+		next();
+	});
+};
