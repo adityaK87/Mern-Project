@@ -11,6 +11,7 @@ const {
 	getAllProducts,
 	getAllUniquecategories,
 } = require("../controllers/product");
+
 const { isAuthenticated, isSignedIn, isAdmin } = require("../controllers/auth");
 const { getUserId } = require("../controllers/user");
 
