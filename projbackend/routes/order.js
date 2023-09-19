@@ -5,7 +5,13 @@ const { isAuthenticated, isSignedIn, isAdmin } = require("../controllers/auth");
 const { getUserId, pushOrderInPurchaseList } = require("../controllers/user");
 const { updateStock } = require("../controllers/product");
 
-const { getOrderbyId, createOrder } = require("../controllers/order");
+const {
+	getOrderbyId,
+	createOrder,
+	getAllOrders,
+	getOrderStatus,
+	updateStatus,
+} = require("../controllers/order");
 
 //params
 router.param("userId", getUserId);
@@ -29,6 +35,22 @@ router.get(
 	isAuthenticated,
 	isAdmin,
 	getAllOrders
+);
+
+//status of order
+router.get(
+	"/order/status/:userId",
+	isSignedIn,
+	isAuthenticated,
+	isAdmin,
+	getOrderStatus
+);
+router.put(
+	"/order/:orderId/status/:userId",
+	isSignedIn,
+	isAuthenticated,
+	isAdmin,
+	updateStatus
 );
 
 module.exports = router;
