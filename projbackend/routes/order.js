@@ -22,4 +22,13 @@ router.post(
 	createOrder
 );
 
+//read
+router.get(
+	"/order/all/:userId",
+	isSignedIn,
+	isAuthenticated,
+	isAdmin,
+	getAllOrders
+);
+
 module.exports = router;
